@@ -1,0 +1,28 @@
+.header {
+  background-image: url("../../images/background.png");
+  display: flex;
+  align-items: center;
+  padding: 32px 0 28px;
+  font-size: 20px;
+}
+
+.header__logo {
+  margin-right: 24px;
+}
+
+.header__user-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.header__signin {
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  font-weight: 700;
+  line-height: 24px;
+  background-color: #f3f3f3;
+  cursor: pointer;
+}
