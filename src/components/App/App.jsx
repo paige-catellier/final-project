@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
+import Main from "../Main/Main";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           <Header />
         </div>
         <Routes>
-          <Route path="/" element={<div>Home Page - Coming Soon!</div>} />
+          <Route path="/" element={<Main />} />
         </Routes>
       </div>
     </BrowserRouter>

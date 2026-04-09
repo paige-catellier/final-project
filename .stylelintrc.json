@@ -1,0 +1,6 @@
+{
+  "ignoreFiles": ["**/normalize.css", "**/vendor/**/*.css"],
+  "rules": {
+    "property-no-vendor-prefix": null
+  }
+}

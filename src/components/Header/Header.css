@@ -1,5 +1,6 @@
 .header {
   background-image: url("../../images/background.png");
+  max-width: 1440px;
   display: flex;
   align-items: center;
   padding: 32px 0 28px;
