@@ -1,5 +1,5 @@
 import SearchForm from "../SearchForm/SearchForm";
-import About from "../About/About";
+import About from "../About/About.jsx";
 
 function Main() {
   return (
