@@ -3,10 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
+import SavedNews from "../SavedNews/SavedNews";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -14,6 +16,10 @@ function App() {
 
   const handleSubmit = () => {
     setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const handleLoginClick = () => {
@@ -63,7 +69,9 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/saved-news" element={<SavedNews />} />
         </Routes>
+        <Footer />
       </div>
     </BrowserRouter>
   );

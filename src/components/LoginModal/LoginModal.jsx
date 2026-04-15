@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./LoginModal.css";
 
@@ -13,18 +13,12 @@ function LoginModal({
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const isValid =
-    email.includes("@") && /\S+@\S+\.\S+/.test(email) && password.length > 0;
-
-  console.log("isLoading:", isLoading);
-  console.log("isValid:", isValid);
-
   const handleLocalSubmit = (e) => {
     e.preventDefault();
 
     const newErrors = {};
 
-    if (!email.includes("@")) {
+    if (!email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
@@ -32,6 +26,8 @@ function LoginModal({
 
     if (!password) {
       newErrors.password = "Password is required";
+    } else if (password.length <= 5) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
@@ -39,9 +35,15 @@ function LoginModal({
     if (Object.keys(newErrors).length === 0) {
       handleSubmit({ email, password });
     }
-    console.log("validation running");
-    console.log("newErrors:", newErrors);
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail("");
+      setPassword("");
+      setErrors({});
+    }
+  }, [isOpen]);
 
   return (
     <ModalWithForm
@@ -53,7 +55,6 @@ function LoginModal({
       isOpen={isOpen}
       handleSubmit={handleLocalSubmit}
       isLoading={isLoading}
-      isValid={isValid}
       handleSwitch={handleSwitch}
     >
       <input
@@ -62,7 +63,6 @@ function LoginModal({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter Email"
-        required
       />
       {errors.email && <span>{errors.email}</span>}
 
@@ -72,7 +72,6 @@ function LoginModal({
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         placeholder="Enter Password"
-        required
       />
       {errors.password && <span>{errors.password}</span>}
     </ModalWithForm>

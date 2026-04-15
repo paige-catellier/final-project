@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
@@ -15,18 +15,12 @@ function RegisterModal({
   const [username, setUsername] = useState("");
   const [errors, setErrors] = useState({});
 
-  const isValid =
-    email.includes("@") &&
-    /\S+@\S+\.\S+/.test(email) &&
-    password.length > 0 &&
-    username.length >= 2;
-
   const handleLocalSubmit = (e) => {
     e.preventDefault();
 
     const newErrors = {};
 
-    if (!email.includes("@")) {
+    if (!email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
@@ -34,6 +28,8 @@ function RegisterModal({
 
     if (!password) {
       newErrors.password = "Password is required";
+    } else if (password.length <= 5) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (username.length < 2) {
@@ -48,6 +44,15 @@ function RegisterModal({
     }
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail("");
+      setPassword("");
+      setUsername("");
+      setErrors({});
+    }
+  }, [isOpen]);
+
   return (
     <ModalWithForm
       title="Sign up"
@@ -58,7 +63,6 @@ function RegisterModal({
       isOpen={isOpen}
       handleSubmit={handleLocalSubmit}
       isLoading={isLoading}
-      isValid={isValid}
       handleSwitch={handleSwitch}
     >
       <input
