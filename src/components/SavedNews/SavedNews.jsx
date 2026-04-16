@@ -1,4 +1,4 @@
-function SavedNews() {
+function SavedNews({ savedArticles, onSaveArticle }) {
   return (
     <div className="saved-news">
       <h2 className="saved-news__title">Saved Articles</h2>

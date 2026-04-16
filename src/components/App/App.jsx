@@ -9,10 +9,26 @@ import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import SavedNews from "../SavedNews/SavedNews";
+import { getNews } from "../../utils/api";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [savedArticles, setSavedArticles] = useState([]);
+
+  const handleSaveArticle = (article) => {
+    const isAlreadySaved = savedArticles.some(
+      (item) => item.url === article.url
+    );
+    if (isAlreadySaved) {
+      setSavedArticles((prev) =>
+        prev.filter((item) => item.url !== article.url)
+      );
+    } else {
+      setSavedArticles((prev) => [...prev, article]);
+    }
+  };
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -39,6 +55,22 @@ function App() {
 
   const handleSignupSuccess = () => {
     setActiveModal("success");
+  };
+
+  const handleSearch = (keyword) => {
+    setIsLoading(true);
+
+    getNews(keyword)
+      .then((data) => {
+        console.log(data);
+        setSearchResults(data.articles);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -68,8 +100,28 @@ function App() {
           />
         </div>
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/saved-news" element={<SavedNews />} />
+          <Route
+            path="/"
+            element={
+              <Main
+                onSearch={handleSearch}
+                articles={searchResults}
+                isLoading={isLoading}
+                onSaveArticle={handleSaveArticle}
+                savedArticles={savedArticles}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          />
+          <Route
+            path="/saved-news"
+            element={
+              <SavedNews
+                savedArticles={savedArticles}
+                onSaveArticle={handleSaveArticle}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </div>
