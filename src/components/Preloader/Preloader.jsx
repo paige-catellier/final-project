@@ -3,7 +3,7 @@ import "./Preloader.css";
 function Preloader() {
   return (
     <div className="preloader">
-      <h2>preloader here</h2>
+      <p className="preloader__title">Searching for news...</p>
     </div>
   );
 }

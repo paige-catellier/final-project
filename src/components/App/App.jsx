@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import "./App.css";
 import Header from "../Header/Header";
@@ -13,11 +13,16 @@ import { getNews } from "../../utils/api";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+  const [visibleArticles, setVisibleArticles] = useState(3);
   const [searchResults, setSearchResults] = useState([]);
   const [savedArticles, setSavedArticles] = useState([]);
 
-  const handleSaveArticle = (article) => {
+  const handleSaveArticle = (article, keyword) => {
+    const articleToSave = { ...article, keyword };
     const isAlreadySaved = savedArticles.some(
       (item) => item.url === article.url
     );
@@ -26,7 +31,7 @@ function App() {
         prev.filter((item) => item.url !== article.url)
       );
     } else {
-      setSavedArticles((prev) => [...prev, article]);
+      setSavedArticles((prev) => [...prev, articleToSave]);
     }
   };
 
@@ -36,6 +41,12 @@ function App() {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+  };
+
+  const handleDeleteArticle = (article) => {
+    setSavedArticles((prev) => {
+      return prev.filter((item) => item.url !== article.url);
+    });
   };
 
   const handleLoginClick = () => {
@@ -59,18 +70,39 @@ function App() {
 
   const handleSearch = (keyword) => {
     setIsLoading(true);
+    setHasSearched(true);
+    setErrorMessage("");
+    setSearchResults([]);
+    setVisibleArticles(3);
+
+    const startTime = Date.now();
 
     getNews(keyword)
       .then((data) => {
-        console.log(data);
-        setSearchResults(data.articles);
+        setSearchResults(data.articles || []);
       })
       .catch((err) => {
         console.error(err);
+        setErrorMessage(
+          "Sorry, something went wrong during the request. Please try again later."
+        );
       })
       .finally(() => {
-        setIsLoading(false);
+        const elapsed = Date.now() - startTime;
+        const minimumLoadingTime = 1000;
+        const remainingTime = minimumLoadingTime - elapsed;
+
+        setTimeout(
+          () => {
+            setIsLoading(false);
+          },
+          remainingTime > 0 ? remainingTime : 0
+        );
       });
+  };
+
+  const handleShowMore = () => {
+    setVisibleArticles((prev) => prev + 3);
   };
 
   return (
@@ -107,8 +139,12 @@ function App() {
                 onSearch={handleSearch}
                 articles={searchResults}
                 isLoading={isLoading}
-                onSaveArticle={handleSaveArticle}
+                handleSaveArticle={handleSaveArticle}
                 savedArticles={savedArticles}
+                hasSearched={hasSearched}
+                errorMessage={errorMessage}
+                visibleArticles={visibleArticles}
+                onShowMore={handleShowMore}
                 isLoggedIn={isLoggedIn}
               />
             }
@@ -116,10 +152,15 @@ function App() {
           <Route
             path="/saved-news"
             element={
-              <SavedNews
-                savedArticles={savedArticles}
-                onSaveArticle={handleSaveArticle}
-              />
+              isLoggedIn ? (
+                <SavedNews
+                  savedArticles={savedArticles}
+                  currentUser={{ name: "Elise" }}
+                  handleDeleteArticle={handleDeleteArticle}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
             }
           />
         </Routes>

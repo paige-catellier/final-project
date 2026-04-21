@@ -6,8 +6,12 @@ function Main({
   onSearch,
   articles,
   isLoading,
-  onSaveArticle,
+  handleSaveArticle,
   savedArticles,
+  hasSearched,
+  errorMessage,
+  visibleArticles,
+  onShowMore,
   isLoggedIn,
 }) {
   return (
@@ -21,7 +25,11 @@ function Main({
       <NewsCardList
         articles={articles}
         isLoading={isLoading}
-        onSaveArticle={onSaveArticle}
+        hasSearched={hasSearched}
+        errorMessage={errorMessage}
+        visibleArticles={visibleArticles}
+        onShowMore={onShowMore}
+        handleSaveArticle={handleSaveArticle}
         savedArticles={savedArticles}
         isLoggedIn={isLoggedIn}
       />
