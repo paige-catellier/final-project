@@ -1,8 +1,14 @@
+.news-card__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .card {
   width: 400px;
   height: 576px;
   background-color: #fff;
-  border-radius: 25%;
+  border-radius: 5%;
+  margin-right: 16px;
   overflow: hidden;
 }
 
@@ -14,8 +20,8 @@
 
 .card__save-btn {
   background-image: url("../../images/bookmark.svg");
-  position: absolute;
-  margin: 24px 24px 512px 352px;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 40px;
   height: 40px;
   background-color: #fff;

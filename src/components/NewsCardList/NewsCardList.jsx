@@ -63,20 +63,20 @@ function NewsCardList({
 
           return (
             <article className="card" key={article.url || index}>
-              <img
-                className="card__image"
-                src={article.urlToImage || "No image avaliable"}
-                alt={article.title || "News article"}
-              />
-              <button
-                type="button"
-                className={`card__save-btn ${
-                  isSaved ? "card__save-btn_active" : ""
-                }`}
-                onClick={() => handleSaveArticle(article)}
-              >
-                Save
-              </button>
+              <div className="card__image-container">
+                <img
+                  className="card__image"
+                  src={article.urlToImage || "No image avaliable"}
+                  alt={article.title || "News article"}
+                />
+                <button
+                  type="button"
+                  className={`card__save-btn ${
+                    isSaved ? "card__save-btn_active" : ""
+                  }`}
+                  onClick={() => handleSaveArticle(article)}
+                ></button>
+              </div>
               <div className="card__content">
                 <p className="card__date">{formattedDate}</p>
                 <h3 className="card__title">
