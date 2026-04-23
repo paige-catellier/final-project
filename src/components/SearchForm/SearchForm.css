@@ -39,3 +39,11 @@
   line-height: 24px;
   cursor: pointer;
 }
+
+.search-form__button:hover {
+  background-color: #3f7cee;
+}
+
+.search-form__button:active {
+  background-color: #1a4db0;
+}

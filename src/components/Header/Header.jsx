@@ -10,10 +10,17 @@ function Header({ handleLogInClick, isLoggedIn }) {
       </NavLink>
 
       <div className="header__nav">
-        <button className="header__home-btn">Home</button>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `header__home-link ${isActive ? "header__link_active" : ""}`
+          }
+        >
+          Home
+        </NavLink>
         {isLoggedIn && (
           <NavLink to="/saved-news" className="header__saved-news">
-            <button className="header__saved-articles">Saved Articles</button>
+            Saved Articles
           </NavLink>
         )}
 

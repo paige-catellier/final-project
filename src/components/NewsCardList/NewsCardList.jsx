@@ -1,5 +1,6 @@
 import "./NewsCardList.css";
 import Preloader from "../Preloader/Preloader";
+import notFoundImage from "../../images/not-found.svg";
 
 function NewsCardList({
   articles,
@@ -16,12 +17,24 @@ function NewsCardList({
   }
 
   if (isLoading) {
-    return <Preloader />;
+    return (
+      <section className="news-card">
+        <div className="news_card__preloader">
+          <Preloader />
+          <p className="news-card__loading-text">Searching for news...</p>
+        </div>
+      </section>
+    );
   }
 
   if (!articles.length) {
     return (
       <section className="news-card">
+        <img
+          className="news-card__not-found"
+          src={notFoundImage}
+          alt="Not found"
+        />
         <p className="news-card__message">Nothing found.</p>
         <p className="news-card__message-details">
           Sorry, but nothing matched your search terms.

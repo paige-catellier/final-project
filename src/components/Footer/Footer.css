@@ -1,7 +1,12 @@
 .footer {
-  padding: 40px 0 24px 0;
+  padding: 32px 104px 26px;
   display: flex;
   justify-content: space-between;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #b6bcbf;
 }
 
 .footer__name {
@@ -10,4 +15,20 @@
 
 .footer__year {
   margin: 0;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.footer__link {
+  width: 24px;
+  height: 24px;
+}
+
+.footer__icon {
+  width: 24px;
+  height: 24px;
 }
