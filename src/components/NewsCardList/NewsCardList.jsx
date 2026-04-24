@@ -5,6 +5,7 @@ import notFoundImage from "../../images/not-found.svg";
 function NewsCardList({
   articles,
   isLoading,
+  isLoggedIn,
   hasSearched,
   errorMessage,
   visibleArticles,
@@ -82,13 +83,23 @@ function NewsCardList({
                   src={article.urlToImage || "No image avaliable"}
                   alt={article.title || "News article"}
                 />
-                <button
-                  type="button"
-                  className={`card__save-btn ${
-                    isSaved ? "card__save-btn_active" : ""
-                  }`}
-                  onClick={() => handleSaveArticle(article)}
-                ></button>
+                <div className="card__save-container">
+                  {!isLoggedIn && (
+                    <p className="card__save-tooltip">
+                      Sign in to save articles
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    className={`card__save-btn ${
+                      isSaved ? "card__save-btn_active" : ""
+                    }`}
+                    onClick={() => {
+                      if (!isLoggedIn) return;
+                      handleSaveArticle(article);
+                    }}
+                  ></button>
+                </div>
               </div>
               <div className="card__content">
                 <p className="card__date">{formattedDate}</p>
@@ -106,11 +117,13 @@ function NewsCardList({
           );
         })}
       </div>
-      {hasMoreArticles && (
-        <button className="news-card__btn" onClick={onShowMore}>
-          Show More
-        </button>
-      )}
+      <div className="news-card__btn-container">
+        {hasMoreArticles && (
+          <button className="news-card__btn" onClick={onShowMore}>
+            Show More
+          </button>
+        )}
+      </div>
     </section>
   );
 }

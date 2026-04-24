@@ -10,6 +10,7 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import SuccessModal from "../SuccessModal/SuccessModal";
 import SavedNews from "../SavedNews/SavedNews";
 import { getNews } from "../../utils/api";
+import { authorize, register, checkToken } from "../../utils/auth";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");

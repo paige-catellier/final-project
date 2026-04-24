@@ -13,7 +13,7 @@ function Header({ handleLogInClick, isLoggedIn }) {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `header__home-link ${isActive ? "header__link_active" : ""}`
+            `header__link ${isActive ? "header__link_active" : ""}`
           }
         >
           Home
