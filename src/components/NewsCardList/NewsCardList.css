@@ -89,6 +89,7 @@
   background-color: #fff;
   border-radius: 5%;
   margin-right: 16px;
+  margin-bottom: 16px;
   overflow: hidden;
 }
 
@@ -143,13 +144,12 @@
   background-color: #fff;
   cursor: pointer;
 }
+.card__save-btn_active {
+  background-image: url("../../images/bookmark-saved.svg");
+}
 
 .card__save-btn:hover {
   background-image: url("../../images/bookmark-hover.svg");
-}
-
-.card__save-btn_active {
-  background-image: url("../../images/bookmark-saved.svg");
 }
 
 .card__content {

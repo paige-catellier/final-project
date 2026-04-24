@@ -5,7 +5,7 @@ import "./LoginModal.css";
 function LoginModal({
   isOpen,
   closeModal,
-  handleSubmit,
+  handleLogin,
   handleSwitch,
   isLoading,
 }) {
@@ -33,7 +33,7 @@ function LoginModal({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      handleSubmit({ email, password });
+      handleLogin({ email, password });
     }
   };
 

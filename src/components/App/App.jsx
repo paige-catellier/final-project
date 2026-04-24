@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -21,6 +21,73 @@ function App() {
   const [visibleArticles, setVisibleArticles] = useState(3);
   const [searchResults, setSearchResults] = useState([]);
   const [savedArticles, setSavedArticles] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const handleLogin = ({ email, password }) => {
+    setIsLoading(true);
+
+    authorize(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
+        return checkToken(res.token);
+      })
+      .then((userData) => {
+        setCurrentUser(userData.data);
+        setIsLoggedIn(true);
+        closeModal();
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleRegister = ({ email, password, username }) => {
+    setIsLoading(true);
+
+    register({ email, password, username })
+      .then(() => {
+        handleSignupSuccess();
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (!token) return;
+
+    checkToken(token)
+      .then((res) => {
+        setCurrentUser(res.data);
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        localStorage.removeItem("jwt");
+      });
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setCurrentUser(null);
+    setIsLoggedIn(false);
+  };
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
 
   const handleSaveArticle = (article, keyword) => {
     const articleToSave = { ...article, keyword };
@@ -34,14 +101,6 @@ function App() {
     } else {
       setSavedArticles((prev) => [...prev, articleToSave]);
     }
-  };
-
-  const handleSubmit = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   const handleDeleteArticle = (article) => {
@@ -110,18 +169,23 @@ function App() {
     <BrowserRouter>
       <div className="page">
         <div className="page__content">
-          <Header handleLogInClick={handleLoginClick} />
+          <Header
+            handleLogInClick={handleLoginClick}
+            isLoggedIn={isLoggedIn}
+            currentUser={currentUser}
+            handleLogout={handleLogout}
+          />
           <LoginModal
             isOpen={activeModal === "signin"}
             closeModal={closeModal}
-            handleSubmit={handleSubmit}
+            handleLogin={handleLogin}
             handleSwitch={handleSwitchToRegister}
             isLoading={isLoading}
           />
           <RegisterModal
             isOpen={activeModal === "signup"}
             closeModal={closeModal}
-            handleSubmit={handleSubmit}
+            handleRegister={handleRegister}
             handleSwitch={handleSwitchToLogin}
             isLoading={isLoading}
             onSuccess={handleSignupSuccess}
@@ -153,15 +217,11 @@ function App() {
           <Route
             path="/saved-news"
             element={
-              isLoggedIn ? (
-                <SavedNews
-                  savedArticles={savedArticles}
-                  currentUser={{ name: "Elise" }}
-                  handleDeleteArticle={handleDeleteArticle}
-                />
-              ) : (
-                <Navigate to="/" />
-              )
+              <SavedNews
+                savedArticles={savedArticles}
+                currentUser={{ name: "Elise" }}
+                handleDeleteArticle={handleDeleteArticle}
+              />
             }
           />
         </Routes>

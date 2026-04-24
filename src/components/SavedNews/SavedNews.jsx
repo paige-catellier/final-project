@@ -1,4 +1,5 @@
 import "./SavedNews.css";
+
 function SavedNews({ savedArticles, handleDeleteArticle, currentUser }) {
   const userName = currentUser?.name || "User";
   const articleCount = savedArticles.length;

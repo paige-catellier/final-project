@@ -5,7 +5,7 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 function RegisterModal({
   isOpen,
   closeModal,
-  handleSubmit,
+  handleRegister,
   handleSwitch,
   isLoading,
   onSuccess,
@@ -39,7 +39,7 @@ function RegisterModal({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      handleSubmit({ email, password, username });
+      handleRegister({ email, password, username });
       onSuccess();
     }
   };

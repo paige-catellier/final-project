@@ -53,9 +53,7 @@
   width: 68px;
   height: 3px;
   background-color: #fff;
-  /* z-index: 10; */
 }
-
 .header__signin-btn {
   width: 176px;
   height: 48px;
@@ -65,4 +63,23 @@
   color: #fff;
   font-size: 18px;
   cursor: pointer;
+}
+
+.header_saved {
+  position: relative;
+  background-color: #fff;
+  border-bottom: 1px solid #d1d2d6;
+}
+
+.header_saved .header__link,
+.header_saved .header__signin-btn {
+  color: #1a1b22;
+}
+
+.header_saved .header__signin-btn {
+  border-color: #1a1b22;
+}
+
+.header_saved .header__link_active::after {
+  background-color: #1a1b22;
 }

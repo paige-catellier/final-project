@@ -1,12 +1,24 @@
 import "./Header.css";
 import logo from "../../images/logo.svg";
-import { NavLink } from "react-router-dom";
+import logoDark from "../../images/logo-dark.svg";
+import { NavLink, useLocation } from "react-router-dom";
 
-function Header({ handleLogInClick, isLoggedIn }) {
+function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
+  const location = useLocation();
+  const isSavedNewsPage = location.pathname === "/saved-news";
+
   return (
-    <header className="header">
+    <header
+      className={`header ${
+        isLoggedIn && isSavedNewsPage ? "header_saved" : ""
+      }`}
+    >
       <NavLink to="/" className="header__logo-link">
-        <img className="header__logo" src={logo} alt="News Explorer Logo" />
+        <img
+          className="header__logo"
+          src={isSavedNewsPage ? logoDark : logo}
+          alt="News Explorer Logo"
+        />
       </NavLink>
 
       <div className="header__nav">
@@ -19,7 +31,12 @@ function Header({ handleLogInClick, isLoggedIn }) {
           Home
         </NavLink>
         {isLoggedIn && (
-          <NavLink to="/saved-news" className="header__saved-news">
+          <NavLink
+            to="/saved-news"
+            className={({ isActive }) =>
+              `header__link ${isActive ? "header__link_active" : ""}`
+            }
+          >
             Saved Articles
           </NavLink>
         )}
@@ -29,7 +46,9 @@ function Header({ handleLogInClick, isLoggedIn }) {
             Sign In
           </button>
         ) : (
-          <button className="header__signin-btn">Log Out</button>
+          <button className="header__signin-btn" onClick={handleLogout}>
+            {currentUser?.name || "Log Out"}
+          </button>
         )}
       </div>
     </header>

@@ -1,6 +1,16 @@
+.saved-news {
+  background: #f5f6f7;
+}
+
 .saved-news__header {
-  padding: 40px 104px;
   background: #fff;
+  padding: 40px 104px 56px;
+}
+
+.saved-news__label {
+  margin: 0 0 28px;
+  color: #1a1b2280;
+  font-size: 18px;
 }
 
 .saved-news__label {
@@ -12,9 +22,11 @@
 .saved-news__title {
   margin: 0 0 30px;
   max-width: 530px;
+  font-family: "Roboto Slab", serif;
   font-size: 40px;
   line-height: 46px;
   font-weight: 400;
+  color: #1a1b22;
 }
 
 .saved-news__keywords {
@@ -24,4 +36,26 @@
 
 .saved-news__keyword-text {
   font-weight: 700;
+}
+
+.saved-news__cards {
+  padding: 64px 104px;
+}
+
+.saved-news__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card__delete-btn {
+  position: absolute;
+  background-image: url("../../images/trash.svg");
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
 }
