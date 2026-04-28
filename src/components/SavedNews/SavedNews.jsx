@@ -5,7 +5,7 @@ function SavedNews({ savedArticles, handleDeleteArticle, currentUser }) {
   const articleCount = savedArticles.length;
 
   const keywords = [
-    ...new Set(savedArticles.map((article) => article.keyword)),
+    ...new Set(savedArticles.map((article) => article.keyword).filter(Boolean)),
   ];
 
   let keywordText = "";

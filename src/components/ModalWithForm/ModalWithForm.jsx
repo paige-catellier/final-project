@@ -13,6 +13,7 @@ function ModalWithForm({
   isLoading,
   loadingText = "Logging In...",
   handleSwitch,
+  isValid,
 }) {
   useEffect(() => {
     const handleEscClose = (e) => {
@@ -42,16 +43,22 @@ function ModalWithForm({
           type="button"
           className="modal__close"
         ></button>
-        <form onSubmit={handleSubmit} name={name} className="modal__form">
+        <form
+          onSubmit={handleSubmit}
+          name={name}
+          className="modal__form"
+          noValidate
+        >
           {children}
           <button
             type="submit"
-            className={`modal__submit modal__submit_${name}`}
+            className={`modal__submit ${isValid ? "modal__submit_active" : ""}`}
             disabled={isLoading}
           >
             {isLoading ? loadingText : buttonText}
           </button>
-          {secondButtonText && (
+          <p className="modal__switch">
+            or{" "}
             <button
               type="button"
               className="modal__register-btn"
@@ -59,7 +66,7 @@ function ModalWithForm({
             >
               {secondButtonText}
             </button>
-          )}
+          </p>
         </form>
       </div>
     </div>

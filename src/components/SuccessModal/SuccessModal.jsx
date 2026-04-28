@@ -1,7 +1,7 @@
 function SuccessModal({ isOpen, closeModal, handleSwitchToLogin }) {
   return (
     <div className={`modal modal_type_success ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
+      <div className="modal__content modal__content_type_success">
         <h2 className="modal__title">Registration successfully completed!</h2>
         <button
           onClick={closeModal}
@@ -11,7 +11,7 @@ function SuccessModal({ isOpen, closeModal, handleSwitchToLogin }) {
 
         <button
           type="button"
-          className="modal__register-btn"
+          className="modal__register-btn modal__register-btn_type_success"
           onClick={handleSwitchToLogin}
         >
           Sign in

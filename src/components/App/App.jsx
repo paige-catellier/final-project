@@ -21,6 +21,7 @@ function App() {
   const [visibleArticles, setVisibleArticles] = useState(3);
   const [searchResults, setSearchResults] = useState([]);
   const [savedArticles, setSavedArticles] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
 
   const handleLogin = ({ email, password }) => {
@@ -81,14 +82,6 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const handleSubmit = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  };
-
   const handleSaveArticle = (article, keyword) => {
     const articleToSave = { ...article, keyword };
     const isAlreadySaved = savedArticles.some(
@@ -99,6 +92,10 @@ function App() {
         prev.filter((item) => item.url !== article.url)
       );
     } else {
+      const articleToSave = {
+        ...article,
+        keyword: searchKeyword,
+      };
       setSavedArticles((prev) => [...prev, articleToSave]);
     }
   };
@@ -134,6 +131,7 @@ function App() {
     setErrorMessage("");
     setSearchResults([]);
     setVisibleArticles(3);
+    setSearchKeyword(keyword);
 
     const startTime = Date.now();
 

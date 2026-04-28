@@ -1,6 +1,5 @@
 import { useState, useEffect, use } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import "./LoginModal.css";
 
 function LoginModal({
   isOpen,
@@ -15,6 +14,7 @@ function LoginModal({
 
   const handleLocalSubmit = (e) => {
     e.preventDefault();
+    console.log("validation running");
 
     const newErrors = {};
 
@@ -45,35 +45,43 @@ function LoginModal({
     }
   }, [isOpen]);
 
+  const isValid = /\S+@\S+\.\S+/.test(email) && password.length > 5;
+
   return (
     <ModalWithForm
       title="Sign in"
       name="signin"
       buttonText="Sign in"
-      secondButtonText="Or Sign up"
+      secondButtonText="Sign up"
       closeModal={closeModal}
       isOpen={isOpen}
       handleSubmit={handleLocalSubmit}
       isLoading={isLoading}
       handleSwitch={handleSwitch}
+      isValid={isValid}
     >
+      <p className="modal__label">Email</p>
       <input
+        className={`modal__input ${errors.email ? "modal__input_error" : ""}`}
         type="email"
         name="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter Email"
       />
-      {errors.email && <span>{errors.email}</span>}
-
+      {errors.email && <span className="modal__error">{errors.email}</span>}
+      <p className="modal__label">Password</p>
       <input
+        className={`modal__input ${errors.email ? "modal__input_error" : ""}`}
         type="password"
         name="password"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         placeholder="Enter Password"
       />
-      {errors.password && <span>{errors.password}</span>}
+      {errors.password && (
+        <span className="modal__error">{errors.password}</span>
+      )}
     </ModalWithForm>
   );
 }

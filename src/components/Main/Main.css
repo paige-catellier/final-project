@@ -37,3 +37,26 @@
   font-size: 18px;
   line-height: 24px;
 }
+
+@media screen and (max-width: 768px) {
+  .main {
+    min-height: 536px;
+    padding: 88px 16px 32px;
+  }
+
+  .main__content {
+    max-width: 100%;
+  }
+
+  .main__title {
+    font-size: 36px;
+    line-height: 40px;
+    margin: 0 0 16px;
+  }
+
+  .main__subtitle {
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0 0 122px;
+  }
+}
