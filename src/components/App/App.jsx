@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -82,8 +83,7 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const handleSaveArticle = (article, keyword) => {
-    const articleToSave = { ...article, keyword };
+  const handleSaveArticle = (article) => {
     const isAlreadySaved = savedArticles.some(
       (item) => item.url === article.url
     );
@@ -163,69 +163,76 @@ function App() {
     setVisibleArticles((prev) => prev + 3);
   };
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setSearchResults([]);
+      setHasSearched(false);
+    }
+  }, [location.pathname]);
+
   return (
-    <BrowserRouter>
-      <div className="page">
-        <div className="page__content">
-          <Header
-            handleLogInClick={handleLoginClick}
-            isLoggedIn={isLoggedIn}
-            currentUser={currentUser}
-            handleLogout={handleLogout}
-          />
-          <LoginModal
-            isOpen={activeModal === "signin"}
-            closeModal={closeModal}
-            handleLogin={handleLogin}
-            handleSwitch={handleSwitchToRegister}
-            isLoading={isLoading}
-          />
-          <RegisterModal
-            isOpen={activeModal === "signup"}
-            closeModal={closeModal}
-            handleRegister={handleRegister}
-            handleSwitch={handleSwitchToLogin}
-            isLoading={isLoading}
-            onSuccess={handleSignupSuccess}
-          />
-          <SuccessModal
-            isOpen={activeModal === "success"}
-            closeModal={closeModal}
-            handleSwitchToLogin={() => setActiveModal("signin")}
-          />
-        </div>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                onSearch={handleSearch}
-                articles={searchResults}
-                isLoading={isLoading}
-                handleSaveArticle={handleSaveArticle}
-                savedArticles={savedArticles}
-                hasSearched={hasSearched}
-                errorMessage={errorMessage}
-                visibleArticles={visibleArticles}
-                onShowMore={handleShowMore}
-                isLoggedIn={isLoggedIn}
-              />
-            }
-          />
-          <Route
-            path="/saved-news"
-            element={
-              <SavedNews
-                savedArticles={savedArticles}
-                currentUser={{ name: "Elise" }}
-                handleDeleteArticle={handleDeleteArticle}
-              />
-            }
-          />
-        </Routes>
-        <Footer />
+    <div className="page">
+      <div className="page__content">
+        <Header
+          handleLogInClick={handleLoginClick}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          handleLogout={handleLogout}
+        />
+        <LoginModal
+          isOpen={activeModal === "signin"}
+          closeModal={closeModal}
+          handleLogin={handleLogin}
+          handleSwitch={handleSwitchToRegister}
+          isLoading={isLoading}
+        />
+        <RegisterModal
+          isOpen={activeModal === "signup"}
+          closeModal={closeModal}
+          handleRegister={handleRegister}
+          handleSwitch={handleSwitchToLogin}
+          isLoading={isLoading}
+          onSuccess={handleSignupSuccess}
+        />
+        <SuccessModal
+          isOpen={activeModal === "success"}
+          closeModal={closeModal}
+          handleSwitchToLogin={() => setActiveModal("signin")}
+        />
       </div>
-    </BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              onSearch={handleSearch}
+              articles={searchResults}
+              isLoading={isLoading}
+              handleSaveArticle={handleSaveArticle}
+              savedArticles={savedArticles}
+              hasSearched={hasSearched}
+              errorMessage={errorMessage}
+              visibleArticles={visibleArticles}
+              onShowMore={handleShowMore}
+              isLoggedIn={isLoggedIn}
+            />
+          }
+        />
+        <Route
+          path="/saved-news"
+          element={
+            <SavedNews
+              savedArticles={savedArticles}
+              currentUser={{ name: "Elise" }}
+              handleDeleteArticle={handleDeleteArticle}
+            />
+          }
+        />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 

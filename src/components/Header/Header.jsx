@@ -18,6 +18,9 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
@@ -64,32 +67,44 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
           </button>
         )}
       </div>
-      {/* <button
-        className="header__menu-btn"
+      <button
         type="button"
+        className={`header__menu-btn ${
+          isMenuOpen ? "header__menu-btn_close" : ""
+        }`}
         onClick={handleMenuToggle}
-      ></button>
-      <section>
-        {isMenuOpen && (
-          <div className="header__mobile-menu">
-            <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
-              Home
+        aria-label="Open menu"
+      />
+
+      {isMenuOpen && (
+        <div className="header__mobile-menu">
+          <NavLink to="/" onClick={closeMenu}>
+            Home
+          </NavLink>
+
+          {isLoggedIn && (
+            <NavLink to="/saved-news" onClick={closeMenu}>
+              Saved Articles
             </NavLink>
+          )}
 
-            {isLoggedIn && (
-              <NavLink to="/saved-news" onClick={() => setIsMenuOpen(false)}>
-                Saved Articles
-              </NavLink>
-            )}
-
-            {!isLoggedIn ? (
-              <button onClick={handleLogInClick}>Sign in</button>
-            ) : (
-              <button onClick={handleLogout}>{currentUser?.name}</button>
-            )}
-          </div>
-        )}
-      </section> */}
+          {!isLoggedIn ? (
+            <button type="button" onClick={handleLogInClick}>
+              Sign in
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                handleLogInClick();
+              }}
+            >
+              {"Log out"}
+            </button>
+          )}
+        </div>
+      )}
     </header>
   );
 }

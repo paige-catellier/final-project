@@ -7,6 +7,11 @@ function Footer() {
     <footer className="footer">
       <p className="footer__name">2026 Supersite, Powered by News API</p>
       <div className="footer__links">
+        <div className="footer__home">
+          <a href="/" className="footer__home_link">
+            Home
+          </a>
+        </div>
         <div className="footer__github">
           <a
             href="https://github.com/paige-catellier"
