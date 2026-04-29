@@ -180,6 +180,7 @@ function App() {
           isLoggedIn={isLoggedIn}
           currentUser={currentUser}
           handleLogout={handleLogout}
+          activeModal={activeModal}
         />
         <LoginModal
           isOpen={activeModal === "signin"}

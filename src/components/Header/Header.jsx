@@ -2,9 +2,15 @@ import "./Header.css";
 import logo from "../../images/logo.svg";
 import logoDark from "../../images/logo-dark.svg";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
+function Header({
+  handleLogInClick,
+  isLoggedIn,
+  currentUser,
+  handleLogout,
+  activeModal,
+}) {
   const location = useLocation();
   const isSavedNewsPage = location.pathname === "/saved-news";
   const navigate = useNavigate();
@@ -21,6 +27,12 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (!activeModal) {
+      closeMenu();
+    }
+  });
 
   return (
     <header
@@ -67,14 +79,16 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
           </button>
         )}
       </div>
-      <button
-        type="button"
-        className={`header__menu-btn ${
-          isMenuOpen ? "header__menu-btn_close" : ""
-        }`}
-        onClick={handleMenuToggle}
-        aria-label="Open menu"
-      />
+      {!activeModal && (
+        <button
+          type="button"
+          className={`header__menu-btn ${
+            isMenuOpen ? "header__menu-btn_close" : ""
+          }`}
+          onClick={handleMenuToggle}
+          aria-label="Open menu"
+        />
+      )}
 
       {isMenuOpen && (
         <div className="header__mobile-menu">
@@ -89,7 +103,13 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
           )}
 
           {!isLoggedIn ? (
-            <button type="button" onClick={handleLogInClick}>
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                handleLogInClick();
+              }}
+            >
               Sign in
             </button>
           ) : (
@@ -97,7 +117,7 @@ function Header({ handleLogInClick, isLoggedIn, currentUser, handleLogout }) {
               type="button"
               onClick={() => {
                 closeMenu();
-                handleLogInClick();
+                onLogoutClick();
               }}
             >
               {"Log out"}
